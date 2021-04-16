@@ -13,13 +13,13 @@ const Button = ({increaseFeedback, feedback}) => {
   )
 }
 
-const Statistics = ({feedback, amount}) => {
+const Statistic = ({feedback, amount}) => {
   return (
   <p>{feedback}: {amount}</p>
   )
 }
 
-const Display = ({total, good, neutral, bad}) => {
+const Statistics = ({total, good, neutral, bad}) => {
   if (total === 0) {
     return (
       <p>No feedback given</p>
@@ -27,12 +27,12 @@ const Display = ({total, good, neutral, bad}) => {
   }
   return (
     <div>
-  <Statistics feedback = "good" amount = {good} />
-      <Statistics feedback = "neutral" amount = {neutral} />
-      <Statistics feedback = "bad" amount = {bad} />
-      <Statistics feedback = "total" amount = {total} />
-      <Statistics feedback = "average" amount = {total === 0? 0 : (good - bad)/total} />
-      <Statistics feedback = "positive" amount = {total === 0? 0 : good/total*100} />
+      <Statistic feedback = "good" amount = {good} />
+      <Statistic feedback = "neutral" amount = {neutral} />
+      <Statistic feedback = "bad" amount = {bad} />
+      <Statistic feedback = "total" amount = {total} />
+      <Statistic feedback = "average" amount = {total === 0? 0 : (good - bad)/total} />
+      <Statistic feedback = "positive" amount = {total === 0? 0 : good/total*100} />
   </div>
   )
     }  
@@ -50,7 +50,7 @@ const App = () => {
       <Button increaseFeedback = {() => {setNeutral(neutral + 1);setTotal(total+1)}} feedback = "neutral" />
       <Button increaseFeedback = {() => {setBad(bad + 1);setTotal(total+1)}} feedback = "bad" />
       <Title title = "statistics" />
-      <Display total = {total} good = {good} neutral = {neutral} bad = {bad}/>
+      <Statistics total = {total} good = {good} neutral = {neutral} bad = {bad}/>
     </div>
   )
 }
