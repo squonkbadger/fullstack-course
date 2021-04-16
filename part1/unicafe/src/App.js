@@ -15,7 +15,7 @@ const Button = ({increaseFeedback, feedback}) => {
 
 const Statistics = ({feedback, amount}) => {
   return (
-  <p>{feedback}: {amount}%</p>
+  <p>{feedback}: {amount}</p>
   )
 }
 
