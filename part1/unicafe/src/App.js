@@ -15,7 +15,9 @@ const Button = ({increaseFeedback, feedback}) => {
 
 const Statistic = ({feedback, amount}) => {
   return (
-  <p>{feedback}: {amount}</p>
+    <tr>
+      <td>{feedback}</td><td>{amount}</td>
+    </tr>
   )
 }
 
@@ -26,14 +28,16 @@ const Statistics = ({total, good, neutral, bad}) => {
     )
   }
   return (
-    <div>
+    <table>
+      <tbody>
       <Statistic feedback = "good" amount = {good} />
       <Statistic feedback = "neutral" amount = {neutral} />
       <Statistic feedback = "bad" amount = {bad} />
       <Statistic feedback = "total" amount = {total} />
       <Statistic feedback = "average" amount = {total === 0? 0 : (good - bad)/total} />
       <Statistic feedback = "positive" amount = {total === 0? 0 : good/total*100} />
-  </div>
+  </tbody>
+  </table>
   )
     }  
 const App = () => {
