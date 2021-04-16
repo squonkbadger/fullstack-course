@@ -1,60 +1,26 @@
 import React, { useState } from 'react'
 
-const Title = (props) => {
+const Button = ({selectAnecdote}) => {
   return (
-  <h1>{props.title}</h1>)
+  <button onClick={selectAnecdote}>Select Anecdote</button>)
 }
 
-const Button = ({increaseFeedback, feedback}) => { 
-  return (
-  <button onClick={increaseFeedback}>
-    {feedback}
-  </button>
-  )
-}
-
-const Statistic = ({feedback, amount}) => {
-  return (
-    <tr>
-      <td>{feedback}</td><td>{amount}</td>
-    </tr>
-  )
-}
-
-const Statistics = ({total, good, neutral, bad}) => {
-  if (total === 0) {
-    return (
-      <p>No feedback given</p>
-    )
-  }
-  return (
-    <table>
-      <tbody>
-      <Statistic feedback = "good" amount = {good} />
-      <Statistic feedback = "neutral" amount = {neutral} />
-      <Statistic feedback = "bad" amount = {bad} />
-      <Statistic feedback = "total" amount = {total} />
-      <Statistic feedback = "average" amount = {total === 0? 0 : (good - bad)/total} />
-      <Statistic feedback = "positive" amount = {total === 0? 0 : good/total*100} />
-  </tbody>
-  </table>
-  )
-    }  
 const App = () => {
-  // save clicks of each button to its own state
-  const [good, setGood] = useState(0)
-  const [neutral, setNeutral] = useState(0)
-  const [bad, setBad] = useState(0)
-  const [total, setTotal] = useState(0)
- 
+  const anecdotes = [
+    'If it hurts, do it more often',
+    'Adding manpower to a late software project makes it later!',
+    'The first 90 percent of the code accounts for the first 90 percent of the development time...The remaining 10 percent of the code accounts for the other 90 percent of the development time.',
+    'Any fool can write code that a computer can understand. Good programmers write code that humans can understand.',
+    'Premature optimization is the root of all evil.',
+    'Debugging is twice as hard as writing the code in the first place. Therefore, if you write the code as cleverly as possible, you are, by definition, not smart enough to debug it.'
+  ]
+   
+  const [selected, setSelected] = useState(0)
+
   return (
     <div>
-      <Title title = "give feedback" />
-      <Button increaseFeedback = {() => {setGood(good + 1);setTotal(total+1)}}feedback = "good" />
-      <Button increaseFeedback = {() => {setNeutral(neutral + 1);setTotal(total+1)}} feedback = "neutral" />
-      <Button increaseFeedback = {() => {setBad(bad + 1);setTotal(total+1)}} feedback = "bad" />
-      <Title title = "statistics" />
-      <Statistics total = {total} good = {good} neutral = {neutral} bad = {bad}/>
+      <Button selectAnecdote = {() => setSelected(Math.floor(Math.random() * 6))} />
+      <p>{anecdotes[selected]}</p>
     </div>
   )
 }
