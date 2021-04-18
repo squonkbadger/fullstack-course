@@ -7,6 +7,16 @@ const Header = ({ course }) => {
   )
 }
 
+const Total = ({ course }) => {
+  const amounts = course.parts.map(part => part.exercises)
+  const sum = amounts.reduce(
+    (accumulator, currentValue) => accumulator + currentValue, 0
+    )
+  return(
+    <p>Number of exercises {sum}</p>
+  ) 
+}
+
 const Part = (props) => {
   return (
     <p>
@@ -21,6 +31,7 @@ const Content = ({ course }) => {
       {course.parts.map(part =>
         <Part key = {part.id} part = {part} />  
       )}
+      <Total course = {course} />
     </div>
   )
 }
@@ -53,10 +64,6 @@ const App = () => {
         name: 'State of a component',
         exercises: 14,
         id: 3
-      },
-      { name: 'Test',
-        exercises: 7,
-        id: 4
       }
     ]
   }
