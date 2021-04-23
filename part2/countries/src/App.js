@@ -3,8 +3,6 @@ import axios from 'axios'
 import React, { useState, useEffect} from 'react'
 
 const CountryData = ({country}) => {
-  console.log(country)
-  console.log(country[0].flag)
   return (
   <div>
     <h2>
@@ -25,12 +23,15 @@ const CountryData = ({country}) => {
   </div>)
 }
 
-const CountryName = ({country}) => {
+const CountryName = ({country, setNewSearch}) => {
   return (
-  <li>{country.name}</li>
+  <li key = {country.name}>
+    {country.name}
+    <button onClick={() => setNewSearch(country.name)}>Show</button>
+  </li>
   )}
 
-const Results = ({countriesToShow}) => {
+const Results = ({countriesToShow, setNewSearch}) => {
   console.log(countriesToShow)
   if (countriesToShow.length > 10 || countriesToShow.length === 0) {
     return (
@@ -42,7 +43,7 @@ const Results = ({countriesToShow}) => {
     return (
       <ul>{
         countriesToShow.map(country => 
-        <CountryName key = {country.name} country = {country} />)
+        <CountryName key = {country.name} country = {country} setNewSearch={setNewSearch}/>)
       }</ul>)
   }
 }
@@ -76,7 +77,7 @@ function App() {
        <input value= {newSearch} onChange = {handleNewSearch}/>
     </div>
     <h2>Results</h2>
-    <Results countriesToShow = {countriesToShow} />
+    <Results countriesToShow = {countriesToShow} setNewSearch = {setNewSearch}/>
   </div>
   )
 }
