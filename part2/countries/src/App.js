@@ -2,7 +2,34 @@
 import axios from 'axios'
 import React, { useState, useEffect} from 'react'
 
-const CountryData = ({country, api_key, setWeather, weather}) => {
+const CountryData = ({country}) => {
+  return(
+    <div>
+      <h2>
+      {country[0].name}
+      </h2>
+      <ul>
+        <li>
+          Capital: {country[0].capital}
+        </li>
+        <li>
+          Population: {country[0].population}
+        </li>
+      </ul>
+
+      <h3>Languages:</h3>
+      <ul> {country[0].languages.map(language =>
+        <li key={language.name}>{language.name}</li>)}
+      </ul>
+      <h3> 
+      Flag:
+      </h3>
+      <img src={country[0].flag} alt="flag" width="100"/>
+    </div>
+  )
+}
+
+const Country = ({country, api_key, setWeather, weather}) => {
   const query = 'http://api.weatherstack.com/current?access_key='+api_key+'&query='+country[0].capital
   useEffect(() => {
     setWeather(null)
@@ -11,24 +38,10 @@ const CountryData = ({country, api_key, setWeather, weather}) => {
       .then(response => {
         setWeather(response.data)
       })
-  }, [query, setWeather])
+  }, [])
   return (
   <div>
-    <h2>
-      {country[0].name}
-    </h2>
-    <ul>
-      <li>Capital: {country[0].capital}</li>
-      <li>Population: {country[0].population}</li>
-    </ul>
-    <h3>Languages:</h3>
-    <ul> {
-      country[0].languages.map(language => <li key={language.name}>{language.name}</li>)
-    }</ul>
-    <h3> 
-      Flag:
-    </h3>
-    <img src={country[0].flag} alt="flag" width="100"/>
+    <CountryData country = {country} />
     <h3>Weather:</h3>
     {weather?<Weather weather = {weather}/>:null}
   </div>)
@@ -59,7 +72,7 @@ const Results = ({countriesToShow, setNewSearch, api_key, setWeather, weather}) 
     <div>Too many matches, specify another filter.</div>
   )
   } else if (countriesToShow.length === 1){
-    return (<div><CountryData country = {countriesToShow} api_key = {api_key} setWeather = {setWeather} weather = {weather} /></div>)
+    return (<div><Country country = {countriesToShow} api_key = {api_key} setWeather = {setWeather} weather = {weather} /></div>)
   } else {
     return (
       <ul>{
