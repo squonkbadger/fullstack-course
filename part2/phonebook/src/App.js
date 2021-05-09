@@ -5,7 +5,7 @@ import Persons from './components/Persons'
 import personService from './services/persons'
 
 const App = () => {
-  const [persons, setPersons] = useState([])
+  const [ persons, setPersons ] = useState([])
   const [ newName, setNewName ] = useState('')
   const [ newNumber, setNewNumber ] = useState('')
   const [ newSearch, setNewSearch ] = useState('')
@@ -22,14 +22,12 @@ const App = () => {
 
   const addPerson = (event) => {
     event.preventDefault()
-    const names = persons.map(person => person.name)
-    
-    if (names.findIndex(name => name === newName) === -1) {
+    const index = persons.findIndex(person => person.name === newName)
+    if (index === -1) {
     const newPerson = {
       name: newName,
       number: newNumber
     }
-    
     personService
       .create(newPerson)
       .then(returnedPerson => {
@@ -38,13 +36,38 @@ const App = () => {
         setNewNumber('')
       })
     } else {
-      window.alert(`${newName} is already added to phonebook`)
+      const id = persons.find(p => p.name === newName).id
+      console.log(id)
+      updatePerson(id, newName, newNumber) 
+      }
     }
+
+
+  const updatePerson = (index, newName, newNumber) => {
+    
+    if (window.confirm(`${newName} is already added to phonebook, replace the old number with a new one?`)) {
+      const newPerson = {
+        name: newName,
+        number: newNumber
+      }
+      console.log(index)
+      personService
+        .update(index, newPerson)
+        .then(returnedPerson => {
+          setPersons(persons.filter(p => p.name !== newName).concat(newPerson))
+        }) }
   }
-  
+
   const handleNameChange = (event) => {
     setNewName(event.target.value)
   }
+
+  const deletePerson = (person) => {
+    if (window.confirm(`remove '${person.name}'?`)) {
+    personService
+      .deletePerson(person.id)
+      .then(setPersons(persons.filter(p => p.id !== person.id)))
+  }}
 
   const handleNumberChange = (event) => {
     setNewNumber(event.target.value)
@@ -65,7 +88,7 @@ const App = () => {
         handleNumberChange = {handleNumberChange}
       />
       <h2>Numbers</h2>
-      <Persons personsToShow = {personsToShow}/>
+      <Persons personsToShow = {personsToShow} deletePerson = {deletePerson}/>
     </div>
   )
 }
