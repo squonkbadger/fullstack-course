@@ -3,13 +3,14 @@ import Filter from './components/Filter'
 import Form from './components/Form'
 import Persons from './components/Persons'
 import personService from './services/persons'
+import Notification from './components/Notification'
 
 const App = () => {
   const [ persons, setPersons ] = useState([])
   const [ newName, setNewName ] = useState('')
   const [ newNumber, setNewNumber ] = useState('')
   const [ newSearch, setNewSearch ] = useState('')
-
+  const [ notification, setNotification] = useState(null)
   useEffect(() => {
     personService
       .getAll()
@@ -34,6 +35,10 @@ const App = () => {
         setPersons(persons.concat(returnedPerson))
         setNewName('')
         setNewNumber('')
+        setNotification(`Created '${returnedPerson.name}'`)
+        setTimeout(() => {
+          setNotification(null)
+        }, 5000)
       })
     } else {
       const id = persons.find(p => p.name === newName).id
@@ -50,12 +55,16 @@ const App = () => {
         name: newName,
         number: newNumber
       }
-      console.log(index)
       personService
         .update(index, newPerson)
         .then(returnedPerson => {
-          setPersons(persons.filter(p => p.name !== newName).concat(newPerson))
-        }) }
+          setPersons(persons.filter(p => p.name !== newName).concat(returnedPerson))
+          setNotification(`Updated '${returnedPerson.name}'`)
+          setTimeout(() => {
+            setNotification(null)
+          }, 5000)
+        })
+      }
   }
 
   const handleNameChange = (event) => {
@@ -79,6 +88,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      <Notification message = {notification} />
       <Filter newSearch = {newSearch} handleNewSearch = {handleNewSearch}/>
       <Form 
         addPerson = {addPerson} 
